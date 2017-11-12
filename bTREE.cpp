@@ -12,32 +12,48 @@ bTREE::~bTREE()
 
 int bTREE::dataInserted()
 {
+	// Stub
+	return -1;
 }
 
 int bTREE::numberOfNodes()
 {
+	// Stub
+	return -1;
 }
 
 int bTREE::insert(string data, int time)
 {
+	// Stub
+	return -1;
 }
 
 int bTREE::find(string)
 {
+	// Stub
+	return -1;
 }
 
-string bTREE::locate()
+string bTREE::locate(string search_string)
 {
+	// Stub
+	return "string";
 }
 
-friend bool bTREE::operator ==(const bTREE& lhs, const bTREE& rhs)
+bool operator ==(const bTREE& lhs, const bTREE& rhs)
 {
+	// Stub
+	return true;
 }
 
-friend bool bTREE::operator !=(const bTREE& lhs, const bTREE& rhs)
+bool operator !=(const bTREE& lhs, const bTREE& rhs)
 {
+	// Stub
+	return true;
 }
 
-friend std::ostream& bTREE::operator <<(std::ostream& out, const bTREE& p)
+std::ostream& operator <<(std::ostream& out, const bTREE& p)
 {
+	// Stub
+	return out;
 }

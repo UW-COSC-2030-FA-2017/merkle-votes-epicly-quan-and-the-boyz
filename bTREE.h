@@ -7,6 +7,13 @@ class bTREE
     struct treeNode{
         string data;
         int time;
+
+		// Variable to differentiable if node if leaf
+		bool is_leaf;
+
+		// Pointers to right and left children
+		treeNode* right_child;
+		treeNode* left_child;
     };
     
 private:
@@ -21,9 +28,9 @@ public:
     int dataInserted();
     int numberOfNodes();
     
-    bool insert(string, int);
+    int insert(string, int);
     
-    bool find(string);
+    int find(string);
     
     string locate(string);
     
