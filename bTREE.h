@@ -1,10 +1,12 @@
 #pragma once
 #include <string>
+
 using namespace std;
 
 class bTREE
 {
-    struct treeNode{
+    struct treeNode
+	{
         string data;
         int time;
 
@@ -14,9 +16,38 @@ class bTREE
 		// Pointers to right and left children
 		treeNode* right_child;
 		treeNode* left_child;
+
+		// Constructor for treeNode struct
+		treeNode(bool new_leaf = true)
+		{
+			is_leaf = new_leaf;
+			right_child = NULL;
+			left_child = NULL;
+		}
+
+		// Sets data
+		void set_data(string new_data, int new_time)
+		{
+			data = new_data;
+			time = new_time;
+		}
     };
     
 private:
+
+	// Pointer to treeNode
+	treeNode* tree = NULL;
+
+	int dataInsertedPrivate();
+	int size(treeNode* tree);
+
+	int insertPrivate(string, int);
+	
+	int findPrivate(string);
+
+	string locatePrivate(string);
+
+	
     //some data structure to hold your treeNodes together ...
     //DATASTUCTURE treeNodes tree;
     //any helper private variables you need
@@ -25,6 +56,7 @@ public:
     bTREE();
     ~bTREE();
     
+	// What is it supposed to do?
     int dataInserted();
     int numberOfNodes();
     
