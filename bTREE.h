@@ -41,9 +41,9 @@ private:
 	int dataInserted_helper(treeNode*);
 	int size(treeNode* tree);
 
-	int insert_helper(string, int);
+	treeNode* insert_helper(string, int, treeNode*);
 	
-	int find_helper(string, treeNode*);
+	bool find_helper(string, treeNode*);
 
 	string locatePrivate(string);
 
@@ -62,14 +62,12 @@ public:
     int dataInserted();
     int numberOfNodes();
     
-    int insert(string, int);
+    bool insert(string, int);
     
-    int find(string);
+    bool find(string);
     
     string locate(string);
-
-
-    
+	    
     
     friend bool operator==(const bTREE& lhs, const bTREE& rhs);
     friend bool operator!=(const bTREE& lhs, const bTREE& rhs);

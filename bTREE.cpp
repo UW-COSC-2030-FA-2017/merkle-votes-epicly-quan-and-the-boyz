@@ -77,13 +77,51 @@ int bTREE::size(treeNode* tree)
 	return size_tree;
 }
 
-int bTREE::insert(string data, int time)
+bool bTREE::insert(string data, int time)
 {
 	// Call helper function insert_helper()
-	return insert_helper(data, time);
+	if (insert_helper(data, time, tree) != NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
+
+// Insert data and time into binary tree
+// Return true/false for success/failure
+treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeNode* subtree)
+{
+
+	// Insert if node is empty
+	if (subtree == NULL)
+	{
+		subtree = new treeNode();
+		subtree->set_data(data_insert, time_insert);
+		return subtree;
+	}
+	// Insert if root is empty
+	else if (subtree->data.length() == 0)
+	{
+		subtree->set_data(data_insert, time_insert);
+		return subtree;
+	}
+	else
+	{
+		// Insert in left child if empty
+		subtree->left_child = insert_helper(data_insert, time_insert, subtree->left_child);
+		
+	}
+}
+
+
+
+// USE THIS FOR PMT.CPP for counting number of opearions!!!
+/*
 // Insert data and time into binary tree
 // Return number of operations for insertion
 int bTREE::insert_helper(string data_insert, int time_insert)
@@ -98,7 +136,7 @@ int bTREE::insert_helper(string data_insert, int time_insert)
 	if (subtree->data.length() == 0)
 	{
 		subtree->set_data(data_insert, time_insert);
-		number++;
+		//number++;
 	}
 	else
 	{
@@ -137,6 +175,7 @@ int bTREE::insert_helper(string data_insert, int time_insert)
 
 	return number;
 }
+*/
 
 // Binary search tree (NOT what we need)
 /*
@@ -254,7 +293,7 @@ int bTREE::insert_helper(string data_insert, int time_insert, treeNode* prevNode
 
 // Find data within tree
 // If found return 
-int bTREE::find(string data_find)
+bool bTREE::find(string data_find)
 {
 	// Call helper function
 	return find_helper(data_find, tree);
@@ -263,20 +302,20 @@ int bTREE::find(string data_find)
 
 // Helper function for find(string)
 // Implemented with recursion
-int bTREE::find_helper(string data_find, treeNode* subtree)
+bool bTREE::find_helper(string data_find, treeNode* subtree)
 {
 	
 	// Check if subtree is empty
 	// Base case for recursion
 	if (subtree == NULL)
 	{
-		return 0;
+		return false;
 	}
 	// Check if subtree's data is data_find
 	// Return 1 if it is
 	else if (subtree->data == data_find)
 	{
-		return 1;
+		return true;
 	}
 	// If data not found yet, keep looking
 	else
