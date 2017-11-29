@@ -51,3 +51,63 @@ Create a poster using the template provided, describing your design decisions, l
 Poster will be due at the time of final code submission
 
 You must change this readme file to contain the names of your group members as well as the mathematical functions you have each implemented for your hash functions.
+
+
+
+
+int bTREE::insertPrivate(string data_insert, int time_insert)
+{
+	// Subtree to iterate through tree
+	treeNode* subtree = tree;
+
+	// Count number of operations (starts at 2 because it will always get entered and will be checked at least once.)
+	int number = 2;
+
+	// Call constructor if tree is empty
+	if (tree == NULL){
+		tree = new treeNode();
+		tree->set_data(data_insert, time_insert);
+		tree->left_child = NULL;
+		tree->right_child = NULL;
+		//this is because there is no check
+		number--;
+	}
+	else{
+		// Insert data into leaf
+		// Iterate through tree 
+		while (subtree != NULL){
+			// Go left, if data is less than root's data
+			if (data_insert <= tree->data){
+				if (subtree->left_child == NULL) {
+					subtree->is_leaf = false;
+					subtree = subtree->left_child;
+					number++;
+				}
+				else {
+					subtree->left_child = new treeNode();
+					subtree->left_child->set_data(data_insert, time_insert);
+					subtree->left_child->is_leaf = false;
+					subtree->left_child->right_child = NULL;
+					subtree->left_child->left_child = NULL;
+					subtree = subtree->left_child->left_child;
+				}
+			}
+			else{
+				if (subtree->right_child != NULL) {
+					subtree->is_leaf = false;
+					subtree = subtree->right_child;
+					number++;
+				}
+				else {
+					subtree->right_child = new treeNode();
+					subtree->right_child->set_data(data_insert, time_insert);
+					subtree->right_child->is_leaf = false;
+					subtree->right_child->right_child = NULL;
+					subtree->right_child->left_child = NULL;
+					subtree = subtree->right_child->right_child;
+				}
+			}
+		}
+	}
+	return number;
+}
