@@ -43,11 +43,11 @@ private:
 
 	int insert_helper(string, int);
 	
-	int findPrivate(string);
+	int find_helper(string, treeNode*);
 
 	string locatePrivate(string);
 
-	
+	bool is_same(treeNode* lhs, treeNode* rhs);
 
 	
     //some data structure to hold your treeNodes together ...
@@ -75,9 +75,6 @@ public:
     friend bool operator!=(const bTREE& lhs, const bTREE& rhs);
 
     friend std::ostream& operator<<(std::ostream& out, const bTREE& p);
-
-
-	bool is_same(treeNode* lhs, treeNode* rhs);
     
 };
 

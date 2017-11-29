@@ -252,10 +252,39 @@ int bTREE::insert_helper(string data_insert, int time_insert, treeNode* prevNode
 }
 */
 
-int bTREE::find(string)
+// Find data within tree
+// If found return 
+int bTREE::find(string data_find)
 {
-	// Stub
-	return -1;
+	// Call helper function
+	return find_helper(data_find, tree);
+}
+
+
+// Helper function for find(string)
+// Implemented with recursion
+int bTREE::find_helper(string data_find, treeNode* subtree)
+{
+	
+	// Check if subtree is empty
+	// Base case for recursion
+	if (subtree == NULL)
+	{
+		return 0;
+	}
+	// Check if subtree's data is data_find
+	// Return 1 if it is
+	else if (subtree->data == data_find)
+	{
+		return 1;
+	}
+	// If data not found yet, keep looking
+	else
+	{
+		return (find_helper(data_find, subtree->left_child) || find_helper(data_find, subtree->right_child));
+	}
+
+
 }
 
 string bTREE::locate(string search_string)
@@ -270,7 +299,8 @@ bool operator ==(const bTREE& lhs, const bTREE& rhs)
 {
 	// Stub
 
-	return is_same(lhs.tree, rhs.tree);
+	return true;
+	//is_same(lhs.tree, rhs.tree);
 }
 
 bool operator !=(const bTREE& lhs, const bTREE& rhs)

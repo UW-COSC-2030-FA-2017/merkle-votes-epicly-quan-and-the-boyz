@@ -51,10 +51,17 @@ int main()
 	cout << test_tree.dataInserted() << endl;
 	cout << endl;
 
+	cout << "Testing find(string) function" << endl;
+	// Should return true (1)
+	cout << test_tree.find("a") << endl;
+	// Should return false (0)
+	cout << test_tree.find("Damir") << endl;
+	cout << endl;
+
 
 	cout << "Testing is_same() function" << endl;
 	bTREE test_tree2;
-	cout << test_tree.is_same() << endl;
+	
 
 	return 0;
 }
