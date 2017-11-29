@@ -41,7 +41,7 @@ private:
 	int dataInsertedPrivate();
 	int size(treeNode* tree);
 
-	int insertPrivate(string, int);
+	int insert_helper(string, int);
 	
 	int findPrivate(string);
 

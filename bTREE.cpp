@@ -5,17 +5,10 @@
 bTREE::bTREE()
 {
 	// Construct root
-	tree = NULL;
-	
-	/*new treeNode();
-
-	// Default values
-	tree->is_leaf = true;
-	tree->right_child = NULL;
-	tree->left_child = NULL;
+	tree = new treeNode();
 	tree->time = 0;
 	tree->data = "";
-	*/
+	
 }
 
 bTREE::~bTREE()
@@ -24,7 +17,7 @@ bTREE::~bTREE()
 
 int bTREE::dataInserted()
 {
-	// 
+	
 	return -1;
 }
 
@@ -50,120 +43,186 @@ int bTREE::size(treeNode* tree)
 	{
 		// If node is not empty, add one to size
 		// Find size of left and rigth subtrees of node
-
 		size_tree = 1 + size(tree->left_child) + size(tree->right_child);
-
 	}
 
 	return size_tree;
-
-
 }
 
 int bTREE::insert(string data, int time)
 {
-
-	// Call helper function insertPrivate()
-	return insertPrivate(data, time);
+	// Call helper function insert_helper()
+	return insert_helper(data, time);
 }
 
 
-int bTREE::insertPrivate(string data_insert, int time_insert)
+// Insert data and time into binary tree
+// Return number of operations for insertion
+int bTREE::insert_helper(string data_insert, int time_insert)
 {
-	// Subtree to iterate through tree
-	treeNode* subtree = tree;
-
 	// Count number of operations
 	int number = 0;
 
-	// Call constructor if tree is empty
-	if (tree == NULL)
+	// Keep track of subtree
+	treeNode* subtree = tree;
+
+	// Insert if root's data is empty
+	if (subtree->data.length() == 0)
 	{
-		tree = new treeNode();
-		tree->set_data(data_insert, time_insert);
+		subtree->set_data(data_insert, time_insert);
+		number++;
+	}
+	else
+	{
+		// Count for comparing with root
+		number++;
+
+		// Iterate through tree
+		while (subtree != NULL)
+		{
+			// Reset leaf to false
+			subtree->is_leaf = false;
+
+			// Insert in left child if empty
+			if (subtree->left_child == NULL)
+			{
+				subtree->left_child = new treeNode();
+				subtree->left_child->set_data(data_insert, time_insert);
+				number++;
+				break;
+			}
+			// Insert in right child if empty
+			else if(subtree->right_child == NULL)
+			{
+				subtree->right_child = new treeNode();
+				subtree->right_child->set_data(data_insert, time_insert);
+				number++;
+				break;
+			}
+
+			// Go to left child by default
+			subtree = subtree->left_child;
+			number++;
+		}
+	}
+
+
+	return number;
+}
+
+// Binary search tree (NOT what we need)
+/*
+int bTREE::insert_helper(string data_insert, int time_insert)
+{
+	// Count number of operations
+	int number = 0;
+
+	treeNode* subtree = tree;
+	treeNode* prevNode = NULL;
+
+	// Insert at root, if empty
+	if (subtree->data.length() == 0)
+	{
+		subtree->set_data(data_insert, time_insert);
+		number++;
+	}
+	else
+	{
+		// Iterate through tree
+		while (subtree != NULL)
+		{
+			subtree->is_leaf = false;
+			prevNode = subtree;
+			if (data_insert <= subtree->data)
+			{
+				subtree = subtree->left_child;
+			}
+			else
+			{
+				subtree = subtree->right_child;
+			}
+			number++;
+		}
+
+		// Create new leaf
+		if (data_insert <= prevNode->data)
+		{
+			prevNode->left_child = new treeNode();
+			prevNode->left_child->set_data(data_insert, time_insert);
+		}
+		else
+		{
+			prevNode->right_child = new treeNode();
+			prevNode->right_child->set_data(data_insert, time_insert);
+		}
+		number++;
+	}
+
+
+	return number;
+}
+*/
+
+// Insert data and time into binary tree using recursion
+/*
+int bTREE::insert_helper(string data_insert, int time_insert, treeNode* prevNode,  treeNode* subtree)
+{
+	// Count number of operations
+	int number = 0;
+
+	// Base case for recursion
+	// Create leaf with data and time
+	if (subtree == NULL)
+	{
+		treeNode* subtree = new treeNode();
+
+		// Check if node was not created
+		if (subtree == NULL)
+		{
+			return -1;
+		}
+		else
+		{
+			subtree->set_data(data_insert, time_insert);
+
+			if (data_insert <= prevNode->data)
+			{
+				prevNode->left_child = subtree;
+			}
+			else
+			{
+				prevNode->right_child = subtree;
+			}
+			return 1;
+		}
+	}
+	else if (subtree != NULL && subtree->data.length() == 0)
+	{
+		// Case when root is empty
+		subtree->data = data_insert;
+		subtree->time = time_insert;
+		return 1;
 	}
 	else
 	{
 		// Insert data into leaf
 		// Iterate through tree 
-		while (subtree != NULL)
+		if (data_insert <= tree->data)
 		{
-			// Go left, if data is less than root's data
-			if (data_insert <= tree->data)
-			{
-				// Make node non leaf
-				subtree->is_leaf = false;
-				subtree = subtree->left_child;
-				number++;
-			}
-			else
-			{
-				subtree->is_leaf = false;
-				subtree = subtree->right_child;
-				number++;
-			}
-		}
-
-
-		// Make new node
-
-		subtree = new treeNode();
-
-		if (subtree != NULL)
-		{
-			subtree->set_data(data_insert, time_insert);
-			number++;
+			// Call function recursively and pass left child
+			subtree->is_leaf = false;
+			number = 1 + insert_helper(data_insert, time_insert, subtree, subtree->left_child);
 		}
 		else
 		{
-			number = -1;
+			subtree->is_leaf = false;
+			number = 1 + insert_helper(data_insert, time_insert, subtree, subtree->right_child);
 		}
-
-		
-		/*
-		// Insert if node created
-		else
-		{
-
-			// Insert time and data
-			treeNode* temp = new treeNode();
-
-			temp->data = data_insert;
-			temp->time = time_insert;
-			temp->is_leaf = true;
-		
-			// Insert new node
-			subtree->is_leaf = true;
-
-			subtree = temp;
-			
-
-			// Insert left if less
-			if (data_insert <= subtree->data)
-			{
-				subtree->left_child = temp;
-			}
-			else
-			{
-				subtree->right_child = temp;
-			}
-			
-			number++;
-		}
-		
-		
-		else
-		{
-			// Return -1 if out of memory
-			number = -1;
-		}
-		*/
 	}
-	
 
 	return number;
-
 }
+*/
 
 int bTREE::find(string)
 {
