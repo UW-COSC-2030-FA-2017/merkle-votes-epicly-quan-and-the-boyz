@@ -38,7 +38,7 @@ private:
 	// Pointer to treeNode
 	treeNode* tree = NULL;
 
-	int dataInsertedPrivate();
+	int dataInserted_helper(treeNode*);
 	int size(treeNode* tree);
 
 	int insert_helper(string, int);
@@ -46,6 +46,8 @@ private:
 	int findPrivate(string);
 
 	string locatePrivate(string);
+
+	
 
 	
     //some data structure to hold your treeNodes together ...
@@ -65,12 +67,17 @@ public:
     int find(string);
     
     string locate(string);
+
+
     
     
     friend bool operator==(const bTREE& lhs, const bTREE& rhs);
     friend bool operator!=(const bTREE& lhs, const bTREE& rhs);
 
     friend std::ostream& operator<<(std::ostream& out, const bTREE& p);
+
+
+	bool is_same(treeNode* lhs, treeNode* rhs);
     
 };
 

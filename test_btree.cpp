@@ -23,6 +23,10 @@ int main()
 	cout << test_tree.numberOfNodes() << endl;
 	cout << endl;
 
+	cout << "Testing dataInserted() function" << endl;
+	cout << test_tree.dataInserted() << endl;
+	cout << endl;
+
 	// Test insert() function
 	cout << "Testing insert(string, int) function" << endl;
 	cout << test_tree.insert("c", 10) << endl;
@@ -36,6 +40,21 @@ int main()
 
 	cout << test_tree.insert("a", 40) << endl;
 	cout << endl;
+
+
+	cout << "Counting size" << endl;
+	cout << test_tree.numberOfNodes() << endl;
+	cout << endl;
+
+
+	cout << "Testing dataInserted() function" << endl;
+	cout << test_tree.dataInserted() << endl;
+	cout << endl;
+
+
+	cout << "Testing is_same() function" << endl;
+	bTREE test_tree2;
+	cout << test_tree.is_same() << endl;
 
 	return 0;
 }

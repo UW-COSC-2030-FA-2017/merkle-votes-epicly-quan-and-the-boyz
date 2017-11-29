@@ -17,8 +17,36 @@ bTREE::~bTREE()
 
 int bTREE::dataInserted()
 {
-	
-	return -1;
+	treeNode* subtree = tree;
+	return dataInserted_helper(subtree);
+}
+
+
+// Count number of data nodes inserted into tree with recursion
+int bTREE::dataInserted_helper(treeNode* subtree)
+{
+
+	// Store number of inserted nodes
+	int number_inserted = 0;
+
+	// If node is empty, return zero for size
+	if (subtree == NULL)
+	{
+		return 0;
+	}
+	// If node not empty, but has no data, count as zero 
+	else if (subtree != NULL && subtree->data.length() == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		// If node is not empty, add one to number of nodes
+		// Find number data nodes of left and rigth subtrees of node
+		number_inserted = 1 + dataInserted_helper(subtree->left_child) + dataInserted_helper(subtree->right_child);
+	}
+
+	return number_inserted;
 }
 
 
@@ -236,16 +264,45 @@ string bTREE::locate(string search_string)
 	return "string";
 }
 
+
+// Compare two trees
 bool operator ==(const bTREE& lhs, const bTREE& rhs)
 {
 	// Stub
-	return true;
+
+	return is_same(lhs.tree, rhs.tree);
 }
 
 bool operator !=(const bTREE& lhs, const bTREE& rhs)
 {
-	// Stub
+	// Call helper function
 	return true;
+}
+
+// Checks if two trees are same
+// Two trees are same if they have the same data, time stamps and structure
+// Implemented with recursion
+bool bTREE::is_same(treeNode* lhs, treeNode* rhs)
+{
+	// If both trees are empty, they are same
+	if (lhs == NULL && rhs == NULL)
+	{
+		return false;
+	}
+	// Both are non empty check data and time
+	// Call function recursively with left and right children
+	else if (lhs != NULL && rhs != NULL)
+	{
+		return (lhs->data == rhs->data && lhs->time == rhs->time) && 
+			is_same(lhs->left_child, rhs->left_child) && is_same(lhs->right_child, rhs->right_child);
+
+	}
+	else
+	{
+		return false;
+	}
+
+
 }
 
 std::ostream& operator <<(std::ostream& out, const bTREE& p)
