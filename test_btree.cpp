@@ -59,8 +59,19 @@ int main()
 	cout << endl;
 
 
+	// Testing locate(string) function
+	// Should return R
+	cout << "Testing locate(string) function" << endl;
+	cout << test_tree.locate("d") << endl;
+	cout << endl;
+
+	cout << test_tree.locate("a") << endl;
+	cout << endl;
+
+
 	cout << "Testing is_same() function" << endl;
 	bTREE test_tree2;
+	//test_tree.is_same(test_tree, test_tree2);
 	
 
 	return 0;

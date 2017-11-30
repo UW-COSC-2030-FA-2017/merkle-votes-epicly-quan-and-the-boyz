@@ -1,4 +1,7 @@
 #include "bTREE.h"
+#include <iostream>
+
+using namespace std;
 
 
 //look at descriptions in pMT.h for guidance on what you might need for these function to actually do
@@ -53,7 +56,8 @@ int bTREE::dataInserted_helper(treeNode* subtree)
 int bTREE::numberOfNodes()
 {
 	// Call private size() function
-	return size(tree);
+	tree_size = size(tree);
+	return tree_size;
 }
 
 int bTREE::size(treeNode* tree)
@@ -94,7 +98,7 @@ bool bTREE::insert(string data, int time)
 
 // Insert data and time into binary tree
 // Return true/false for success/failure
-treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeNode* subtree)
+bTREE::treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeNode* subtree)
 {
 
 	// Insert if node is empty
@@ -113,9 +117,16 @@ treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeNode* su
 	else
 	{
 		// Insert in left child if empty
-		subtree->left_child = insert_helper(data_insert, time_insert, subtree->left_child);
-		
+		if (subtree->left_child == NULL)
+		{
+			subtree->left_child = insert_helper(data_insert, time_insert, subtree->left_child);
+		}
+		else
+		{
+			subtree->right_child = insert_helper(data_insert, time_insert, subtree->right_child);
+		}
 	}
+	return subtree;
 }
 
 
@@ -326,20 +337,85 @@ bool bTREE::find_helper(string data_find, treeNode* subtree)
 
 }
 
-string bTREE::locate(string search_string)
+// Return path to locate node with data
+string bTREE::locate(string data_find)
 {
-	// Stub
-	return "string";
+	// Create vector to store path
+	vector<string> path;
+
+	// If there is path to node with data, print it
+	if (locate_helper(data_find, tree, path, ""))
+	{
+		string path_string;
+
+		// Iterate through vector and store path as one string
+		for (int i = 0; i < path.size(); i++)
+		{
+			// Append directions into one string
+			path_string.append(path[i]);
+		}
+		
+		return path_string;
+	}
+	else
+	{
+		return "No Data Found";
+	}
+
+
+}
+
+
+// Helper function for locate(string)
+// Inspired by:
+// http://www.geeksforgeeks.org/print-path-root-given-node-binary-tree/
+bool bTREE::locate_helper(string data_find, treeNode* subtree, vector<string>& path, string direction)
+{
+	// Return false if node is empty
+	if (subtree == NULL)
+	{
+		return false;
+	}
+
+	// Push direction (left/right) into path vector
+	path.push_back(direction);
+	
+	// Return true if data is found in node
+	if (subtree->data == data_find)
+	{
+		return true;
+	}
+
+	// Visit left and right children 
+	if (locate_helper(data_find, subtree->left_child, path, "L") || locate_helper(data_find, subtree->right_child, path, "R"))
+	{
+		return true;
+	}
+
+	// Pop out of vector if this path led to empty node
+	// And return false to indicate that
+	path.pop_back();
+
+	return false;
 }
 
 
 // Compare two trees
-bool operator ==(const bTREE& lhs, const bTREE& rhs)
+bool bTREE::operator ==(const bTREE& rhs) const
 {
-	// Stub
+	// Set is_equal to true by default
+	
+	/*
+	bool is_equal = true;
+
+	if (numberOfNodes() != rhs.numberOfNodes())
+	{
+		is_equal = false;
+	}
+	*/
+
 
 	return true;
-	//is_same(lhs.tree, rhs.tree);
 }
 
 bool operator !=(const bTREE& lhs, const bTREE& rhs)
@@ -371,11 +447,19 @@ bool bTREE::is_same(treeNode* lhs, treeNode* rhs)
 		return false;
 	}
 
-
 }
+
 
 std::ostream& operator <<(std::ostream& out, const bTREE& p)
 {
-	// Stub
+	// Check tree's size
+	if (p.tree_size == 0)
+	{
+		out << "Empty";
+	}
+	else
+	{
+		out << ":";
+	}
 	return out;
 }
