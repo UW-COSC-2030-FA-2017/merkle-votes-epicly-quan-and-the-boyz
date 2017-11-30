@@ -1,3 +1,4 @@
+#include "pMT.h"
 
 pMT::pMT(int hashSelect)
 /**
@@ -6,6 +7,17 @@ pMT::pMT(int hashSelect)
  * @return 
  */
 {
+	// Validate input
+	// Default to hash_1
+	if (hashSelect >= 1 && hashSelect <= 3)
+	{
+		hash = hashSelect;
+	}
+	else
+	{
+		hash = 1;
+	}
+
 }
 
 pMT::~pMT()
