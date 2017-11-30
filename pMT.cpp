@@ -37,6 +37,12 @@ int pMT::insert(string vote, int time)
  */
 
 {
+	// Call insert(string, int) from bTREE
+	myMerkle.insert(hash_1(vote), time);
+	myMerkle.insert(vote, time);
+	myMerkle.set_root((hash_1(vote) + hash_1(vote)), -1);
+	return 0;
+
 }
 
 int pMT::find(string vote, int time, int hashSelect)
@@ -48,7 +54,7 @@ int pMT::find(string vote, int time, int hashSelect)
  * @return 0 if not found, else number of opperations required to find the matching vote
  */
 {
-    
+	return -1;
 }
 
 int pMT::findHash(string mhash)
@@ -58,6 +64,7 @@ int pMT::findHash(string mhash)
  * @return 0 if not found, else number of opperations required to find the matching hash
  */
 {
+	return -1;
 }
 
 
@@ -68,6 +75,7 @@ string pMT::locateData(string vote)
  * @return sequence of L's and R's comprising the movement to the leaf node; else return a dot '.'
  */
 {
+	return "s";
 }
 
 string pMT::locateHash(string mhash)
@@ -77,6 +85,7 @@ string pMT::locateHash(string mhash)
  * @return sequence of L's and R's comprising the movement to the hash node, ; else return a dot '.'
  */
 {
+	return "s";
 }
 
 
@@ -88,6 +97,7 @@ string pMT::hash_1(string key)
  * @return a hash of the key
  */
 {
+	return "s";
 }
 
 string pMT::hash_2(string key)
@@ -97,6 +107,7 @@ string pMT::hash_2(string key)
  * @return a hash of the key
  */
 {
+	return "s";
 }
 
 string pMT::hash_3(string key)
@@ -106,17 +117,82 @@ string pMT::hash_3(string key)
  * @return a hash of the key
  */
 {
+	return "s";
 }
 
+
+
+bool pMT::operator ==(const pMT& rhs)
+/**
+* @brief Comparison between two merkle trees
+* @param lhs, the left hand side of the equality statment
+* @param rhs, the right hand side of the equality statement
+* @return true if equal, false otherwise
+*/
+{
+return true;
+}
+
+
+bool pMT::operator !=(const pMT& rhs)
+/**
+* @brief Comparison between two merkle trees
+* @param lhs, the left hand side of the equality statment
+* @param rhs, the right hand side of the equality statement
+* @return true if not equal, false otherwise
+*/
+{
+return true;
+}
+
+pMT pMT::operator ^=(const pMT& rhs)
+/**
+* @brief XOR between two merkle trees
+* @param lhs, the left hand side of the equality statment
+* @param rhs, the right hand side of the equality statement
+* @return true if not equal, false otherwise
+*/
+{
+return *this;
+}
+
+
+std::ostream& operator<<(std::ostream& out, const pMT& p)
+/**
+* @brief Print out a tree
+* @param out
+* @param p
+* @return a tree to the screen
+*/
+{
+return out;
+}
+
+
+pMT operator ^(const pMT& lhs, const pMT& rhs)
+/**
+* @brief Where do two trees differ
+* @param lhs
+* @param rhs
+* @return a tree comprised of the right hand side tree nodes that are different from the left
+*/
+{
+return lhs;
+}
+
+
+/*
 bool pMT::operator ==(const pMT& lhs, const pMT& rhs)
 /**
  * @brief Comparison between two merkle trees
  * @param lhs, the left hand side of the equality statment
  * @param rhs, the right hand side of the equality statement
  * @return true if equal, false otherwise
- */
+ 
 {
+	return true;
 }
+
 
 bool pMT::operator !=(const pMT& lhs, const pMT& rhs)
 /**
@@ -124,9 +200,9 @@ bool pMT::operator !=(const pMT& lhs, const pMT& rhs)
  * @param lhs, the left hand side of the equality statment
  * @param rhs, the right hand side of the equality statement
  * @return true if not equal, false otherwise
- */
+ 
 {
-    
+	return true;
 }
 
 pMT pMT::operator ^=(const pMT& lhs, const pMT& rhs)
@@ -135,9 +211,9 @@ pMT pMT::operator ^=(const pMT& lhs, const pMT& rhs)
  * @param lhs, the left hand side of the equality statment
  * @param rhs, the right hand side of the equality statement
  * @return true if not equal, false otherwise
- */
+ 
 {
-    
+	return;
 }
 
 
@@ -147,8 +223,9 @@ std::ostream& pMT::operator <<(std::ostream& out, const pMT& p)
  * @param out
  * @param p
  * @return a tree to the screen
- */
+ 
 {
+	return out;
 }
 
 
@@ -158,6 +235,8 @@ pMT pMT::operator ^(const pMT& lhs, const pMT& rhs)
  * @param lhs
  * @param rhs
  * @return a tree comprised of the right hand side tree nodes that are different from the left
- */
+ 
 {
+	return;
 }
+*/

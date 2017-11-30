@@ -28,12 +28,23 @@ public:
     
     string locateHash(string);
     
+
+	bool operator==(const pMT& rhs);
+
+	bool operator!=(const pMT& rhs);
+
+	pMT operator^=(const pMT& rhs);
+	friend std::ostream& operator<<(std::ostream& out, const pMT& p);
+	friend pMT operator ^(const pMT& lhs, const pMT& rhs);
+
+	/*
     friend bool operator==(const pMT& lhs, const pMT& rhs);
     
     friend bool operator!=(const pMT& lhs, const pMT& rhs);
     
     friend pMT operator^(const pMT& lhs, const pMT& rhs);
     friend std::ostream& operator<<(std::ostream& out, const pMT& p);
+	*/
     
 };
 

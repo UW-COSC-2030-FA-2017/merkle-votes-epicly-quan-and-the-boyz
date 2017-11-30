@@ -72,6 +72,10 @@ public:
 	    
 	bool is_same(treeNode* lhs, treeNode* rhs) const;
 
+
+	// Set root of tree
+	void set_root(string, int);
+
     bool operator==(const bTREE& rhs) const;
 	bool operator!=(const bTREE& rhs) const;
 	//friend operator==(const bTREE& lhs, const bTREE& rhs) const;

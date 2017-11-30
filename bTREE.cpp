@@ -112,6 +112,7 @@ bTREE::treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeN
 	else
 	{
 		// Insert in left child if empty
+		subtree->is_leaf = false;
 		if (subtree->left_child == NULL)
 		{
 			subtree->left_child = insert_helper(data_insert, time_insert, subtree->left_child);
@@ -122,6 +123,20 @@ bTREE::treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeN
 		}
 	}
 	return subtree;
+}
+
+
+void bTREE::set_root(string data_hash, int time_set)
+{
+
+	// Set root, if empty
+	if (tree != NULL)
+	{
+		tree->data = data_hash;
+		tree->time = time_set;
+	}
+	
+	return;
 }
 
 
