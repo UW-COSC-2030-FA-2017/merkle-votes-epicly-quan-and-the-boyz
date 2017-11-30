@@ -108,7 +108,7 @@ string pMT::hash_3(string key)
 {
 }
 
-friend bool pMT::operator ==(const pMT& lhs, const pMT& rhs)
+bool pMT::operator ==(const pMT& lhs, const pMT& rhs)
 /**
  * @brief Comparison between two merkle trees
  * @param lhs, the left hand side of the equality statment
@@ -118,7 +118,7 @@ friend bool pMT::operator ==(const pMT& lhs, const pMT& rhs)
 {
 }
 
-friend bool pMT::operator !=(const pMT& lhs, const pMT& rhs)
+bool pMT::operator !=(const pMT& lhs, const pMT& rhs)
 /**
  * @brief Comparison between two merkle trees
  * @param lhs, the left hand side of the equality statment
@@ -129,7 +129,7 @@ friend bool pMT::operator !=(const pMT& lhs, const pMT& rhs)
     
 }
 
-friend pMT pMT::operator ^=(const pMT& lhs, const pMT& rhs)
+pMT pMT::operator ^=(const pMT& lhs, const pMT& rhs)
 /**
  * @brief XOR between two merkle trees
  * @param lhs, the left hand side of the equality statment
@@ -141,7 +141,7 @@ friend pMT pMT::operator ^=(const pMT& lhs, const pMT& rhs)
 }
 
 
-friend std::ostream& pMT::operator <<(std::ostream& out, const pMT& p)
+std::ostream& pMT::operator <<(std::ostream& out, const pMT& p)
 /**
  * @brief Print out a tree
  * @param out
@@ -152,7 +152,7 @@ friend std::ostream& pMT::operator <<(std::ostream& out, const pMT& p)
 }
 
 
-friend pMT pMT::operator ^(const pMT& lhs, const pMT& rhs)
+pMT pMT::operator ^(const pMT& lhs, const pMT& rhs)
 /**
  * @brief Where do two trees differ
  * @param lhs

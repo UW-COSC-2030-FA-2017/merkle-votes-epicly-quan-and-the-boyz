@@ -22,10 +22,11 @@ public:
     
     int insert(string, int);
     
-    int find(string);
+    string locateData(string);
+	int find(string vote, int time, int hashSelect);
     int findHash(string);
     
-    string locate(string);
+    string locateHash(string);
     
     friend bool operator==(const pMT& lhs, const pMT& rhs);
     
