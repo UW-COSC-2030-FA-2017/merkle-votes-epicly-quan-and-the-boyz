@@ -8,10 +8,7 @@ using namespace std;
 bTREE::bTREE()
 {
 	// Construct root
-	tree = new treeNode();
-	tree->time = 0;
-	tree->data = "";
-	
+	tree = NULL;	
 }
 
 bTREE::~bTREE()
@@ -37,11 +34,6 @@ int bTREE::dataInserted_helper(treeNode* subtree)
 	{
 		return 0;
 	}
-	// If node not empty, but has no data, count as zero 
-	else if (subtree != NULL && subtree->data.length() == 0)
-	{
-		return 0;
-	}
 	else
 	{
 		// If node is not empty, add one to number of nodes
@@ -53,14 +45,13 @@ int bTREE::dataInserted_helper(treeNode* subtree)
 }
 
 
-int bTREE::numberOfNodes()
+int bTREE::numberOfNodes() const
 {
 	// Call private size() function
-	tree_size = size(tree);
-	return tree_size;
+	return size(tree);
 }
 
-int bTREE::size(treeNode* tree)
+int bTREE::size(treeNode* tree) const
 {
 
 	// Store size number
@@ -84,7 +75,15 @@ int bTREE::size(treeNode* tree)
 bool bTREE::insert(string data, int time)
 {
 	// Call helper function insert_helper()
-	if (insert_helper(data, time, tree) != NULL)
+	treeNode* leaf = insert_helper(data, time, tree);
+
+	// If tree is empty, insert in root
+	if (tree == NULL && leaf != NULL)
+	{
+		tree = leaf;
+		return true;
+	}
+	else if(tree != NULL && leaf != NULL)
 	{
 		return true;
 	}
@@ -104,13 +103,9 @@ bTREE::treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeN
 	// Insert if node is empty
 	if (subtree == NULL)
 	{
+		//subtree = new treeNode();
 		subtree = new treeNode();
-		subtree->set_data(data_insert, time_insert);
-		return subtree;
-	}
-	// Insert if root is empty
-	else if (subtree->data.length() == 0)
-	{
+		subtree->set_node(true);
 		subtree->set_data(data_insert, time_insert);
 		return subtree;
 	}
@@ -355,11 +350,12 @@ string bTREE::locate(string data_find)
 			path_string.append(path[i]);
 		}
 		
-		return path_string;
+		// Return root if data located in root
+		return (path_string.empty() ? ("Root") : (path_string));
 	}
 	else
 	{
-		return "No Data Found";
+		return "No Path (data not found)";
 	}
 
 
@@ -379,6 +375,7 @@ bool bTREE::locate_helper(string data_find, treeNode* subtree, vector<string>& p
 
 	// Push direction (left/right) into path vector
 	path.push_back(direction);
+
 	
 	// Return true if data is found in node
 	if (subtree->data == data_find)
@@ -404,43 +401,32 @@ bool bTREE::locate_helper(string data_find, treeNode* subtree, vector<string>& p
 bool bTREE::operator ==(const bTREE& rhs) const
 {
 	// Set is_equal to true by default
-	
-	/*
-	bool is_equal = true;
+	// Call is_same() helper function
+	return is_same(this->tree, rhs.tree);
 
-	if (numberOfNodes() != rhs.numberOfNodes())
-	{
-		is_equal = false;
-	}
-	*/
-
-
-	return true;
 }
 
-bool operator !=(const bTREE& lhs, const bTREE& rhs)
+bool bTREE::operator !=( const bTREE& rhs) const
 {
 	// Call helper function
-	return true;
+	return !is_same(this->tree, rhs.tree);
 }
 
 // Checks if two trees are same
 // Two trees are same if they have the same data, time stamps and structure
 // Implemented with recursion
-bool bTREE::is_same(treeNode* lhs, treeNode* rhs)
+bool bTREE::is_same(treeNode* lhs, treeNode* rhs) const
 {
 	// If both trees are empty, they are same
 	if (lhs == NULL && rhs == NULL)
 	{
-		return false;
+		return true;
 	}
 	// Both are non empty check data and time
 	// Call function recursively with left and right children
 	else if (lhs != NULL && rhs != NULL)
 	{
-		return (lhs->data == rhs->data && lhs->time == rhs->time) && 
-			is_same(lhs->left_child, rhs->left_child) && is_same(lhs->right_child, rhs->right_child);
-
+		return (lhs->data == rhs->data) && is_same(lhs->left_child, rhs->left_child) && is_same(lhs->right_child, rhs->right_child);
 	}
 	else
 	{
@@ -453,13 +439,33 @@ bool bTREE::is_same(treeNode* lhs, treeNode* rhs)
 std::ostream& operator <<(std::ostream& out, const bTREE& p)
 {
 	// Check tree's size
-	if (p.tree_size == 0)
+	if (p.numberOfNodes() == 0)
 	{
 		out << "Empty";
 	}
 	else
 	{
-		out << ":";
+		vector<string> traversal;
+		p.preorder(traversal, p.tree);
+
+		for (int i = 0; i < traversal.size(); i++)
+		{
+			out << traversal[i];
+		}
 	}
+	
 	return out;
+}
+
+
+// Helper function for preoder traversal
+void bTREE::preorder(vector<string>& traversal, const treeNode* subtree) const
+{
+	if (subtree != NULL)
+	{
+		traversal.push_back(subtree->data);
+		preorder(traversal, subtree->left_child);
+		preorder(traversal, subtree->right_child);
+	}
+
 }

@@ -18,10 +18,10 @@ class bTREE
 		treeNode* right_child;
 		treeNode* left_child;
 
-		// Constructor for treeNode struct
-		treeNode(bool new_leaf = true)
+		// Function to set node
+		void set_node(bool leaf = true)
 		{
-			is_leaf = new_leaf;
+			is_leaf = leaf;
 			right_child = NULL;
 			left_child = NULL;
 		}
@@ -38,10 +38,11 @@ private:
 
 	// Pointer to treeNode
 	treeNode* tree = NULL;
-	int tree_size = 0;
 
 	int dataInserted_helper(treeNode*);
-	int size(treeNode* tree);
+	int size(treeNode* tree) const;
+
+	void preorder(vector<string>& traversal, const treeNode* subtree) const;
 
 	treeNode* insert_helper(string, int, treeNode*);
 	
@@ -49,9 +50,7 @@ private:
 
 	bool locate_helper(string, treeNode*, vector<string>&, string);
 
-	//int size = 0;
 
-	
     //some data structure to hold your treeNodes together ...
     //DATASTUCTURE treeNodes tree;
     //any helper private variables you need
@@ -63,7 +62,7 @@ public:
     
 	// What is it supposed to do?
     int dataInserted();
-    int numberOfNodes();
+    int numberOfNodes() const;
     
     bool insert(string, int);
     
@@ -71,10 +70,12 @@ public:
     
     string locate(string);
 	    
-	bool is_same(treeNode* lhs, treeNode* rhs);
+	bool is_same(treeNode* lhs, treeNode* rhs) const;
 
     bool operator==(const bTREE& rhs) const;
-    friend bool operator!=(const bTREE& lhs, const bTREE& rhs);
+	bool operator!=(const bTREE& rhs) const;
+	//friend operator==(const bTREE& lhs, const bTREE& rhs) const;
+    //friend bool operator!=(const bTREE& rhs) const;
 
     friend std::ostream& operator<<(std::ostream& out, const bTREE& p);
     
