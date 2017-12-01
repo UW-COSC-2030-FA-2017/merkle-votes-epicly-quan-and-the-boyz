@@ -6,6 +6,7 @@
 
 
 #include "bTREE.h"
+#include "pMT.h"
 #include<iostream>
 #include<string>
 
@@ -13,7 +14,7 @@ using namespace std;
 
 int main()
 {
-
+	/*
 	// Test constructor
 	bTREE test_tree;
 
@@ -103,6 +104,24 @@ int main()
 	cout << "test_tree != test_tree3 (copy of test_tree) - ";
 	(test_tree != test_tree3) ? (cout << "true") : (cout << "false");
 	cout << endl;
+
+	int i;
+	cin >> i;
+	*/
+	pMT test(1); 
+	cout << "Adding node: Jack, 42" << endl << test.insert("Jack", 42) << endl << endl;
+
+	cout << "Adding node: max, 22" << endl << test.insert("Maxc", 22) << endl << endl;
+
+	cout << "spamming node: max, 22" << endl << endl;
+
+	for (int i = 0; i < 20; i++) {
+		cout << test.insert("Max", 22) << endl << endl;
+	}
 	
+	int a;
+
+	cin >> a;
+
 	return 0;
 }
