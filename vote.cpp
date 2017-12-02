@@ -56,12 +56,12 @@ int main(int argc, char **argv)
 	vector<string> votes;
 	vector<int> timestamps;
 
-	while (fOne.eof() == false)
+	while (fTwo.eof() == false)
 	{
-		fOne >> vote;
+		fTwo >> vote;
 		votes.push_back(vote);
 
-		fOne >> time;
+		fTwo >> time;
 		timestamps.push_back(time);
 
 		number_nodes++;
