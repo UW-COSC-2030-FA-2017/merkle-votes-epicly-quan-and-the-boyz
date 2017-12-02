@@ -7,15 +7,20 @@ class pMT
 {
 private:
     int selectedHash;
-    bTREE myMerkle;
+
     
-    string hash_1(string);
-    string hash_2(string);
-    string hash_3(string);
+    string hash_je(string);
+    string hash_da(string);
+    string hash_ja(string);
+
+	int find_helper(string vote, int time, int hashSelect, bTREE::treeNode* subtree);
 
 	int hash;
+	int count;
     
 public:
+
+	bTREE myMerkle;
     pMT(int);
     ~pMT();
     
@@ -29,22 +34,11 @@ public:
     string locateHash(string);
     
 
-	bool operator==(const pMT& rhs);
-
-	bool operator!=(const pMT& rhs);
-
-	pMT operator^=(const pMT& rhs);
+	bool operator==(const pMT& rhs) const;
+	bool operator!=(const pMT& rhs) const;
 	friend std::ostream& operator<<(std::ostream& out, const pMT& p);
-	friend pMT operator ^(const pMT& lhs, const pMT& rhs);
+	pMT operator ^(const pMT& rhs) const;
 
-	/*
-    friend bool operator==(const pMT& lhs, const pMT& rhs);
-    
-    friend bool operator!=(const pMT& lhs, const pMT& rhs);
-    
-    friend pMT operator^(const pMT& lhs, const pMT& rhs);
-    friend std::ostream& operator<<(std::ostream& out, const pMT& p);
-	*/
-    
+	//pMT operator^=(const pMT& rhs) const;
 };
 
