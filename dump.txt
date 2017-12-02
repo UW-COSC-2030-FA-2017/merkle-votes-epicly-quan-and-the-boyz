@@ -1,71 +1,38 @@
 
 
-
-int pMT::insert(string vote, int time)
+int pMT::find(string vote, int time, int hashSelect)
 /**
-* @brief insert a vote and time into a leaf node of tree
-* @param vote - a string
-* @param time - an int representing the time
-* @return the number of operations needed to do the insert, -1 if out of memory
+* @brief given a vote, timestamp, and hash function, does this vote exist in the tree?
+* @param vote, a string
+* @param time, an int
+* @param hashSelect, an int corresponding to the hash functions _1, _2, and _3
+* @return 0 if not found, else number of opperations required to find the matching vote
 */
-
 {
-	// Subtree to iterate through tree
 	bTREE::treeNode* subtree = myMerkle.tree;
 
-	// Count number of operations (starts at 2 because it will always get entered and will be checked at least once.)
-	int number = 2;
-
-	// Call constructor if tree is empty
-	if (myMerkle.tree == NULL) {
-		myMerkle.tree = new bTREE::treeNode();
-		myMerkle.tree->bTREE::treeNode::set_data(vote, time);
-		//this is because there is no check
-	}
-	else {
-		// Insert data into leaf
-		// Iterate through tree 
-		while (subtree != NULL) {
-			// Go left, if data is less than root's data
-			if (time <= myMerkle.tree->time) {
-				if (subtree->left_child == NULL) {
-					subtree->is_leaf = false;
-					subtree = subtree->left_child;
-					number++;
-				}
-				else {
-					subtree->left_child = new bTREE::treeNode();
-					subtree->left_child->bTREE::treeNode::set_data(vote, time);
-					subtree->left_child->is_leaf = false;
-					subtree = subtree->left_child->left_child;
-				}
-			}
-			else {
-				if (subtree->right_child != NULL) {
-					subtree->is_leaf = false;
-					subtree = subtree->right_child;
-					number++;
-				}
-				else {
-					subtree->right_child = new bTREE::treeNode();
-					subtree->right_child->bTREE::treeNode::set_data(vote, time);
-					subtree->right_child->is_leaf = false;
-					subtree = subtree->right_child->right_child;
-				}
-			}
-		}
-	}
-	return number;
+	return find_helper(vote, time, hashSelect, subtree, 1);
 }
 
 
+int pMT::find_helper(string vote, int time, int hashSelect, bTREE::treeNode* subtree, int number) {
+	//number of operations
+	bool found = false;
 
-string pMT::locateData(string vote)
-/**
-* @brief Function takes a hash of Vote and returns the sequence of (L)eft and (R)ight moves to get to that node starting from root.
-* @param vote, the data to search for
-* @return sequence of L's and R's comprising the movement to the leaf node; else return a dot '.'
-*/
-{
-	return myMerkle.bTREE::locate(vote);
+	//why is this not working????????????
+	if (subtree == NULL)
+	{
+		return 0;
+		found = true;
+	}
+	else if (vote == subtree->data && time == subtree->time) {
+		return number;
+	}
+	else {
+		number = 1 + (find_helper(vote, time, hashSelect, subtree->left_child, number) || find_helper(vote, time, hashSelect, subtree->right_child, number));
+		return number;
+	}
+	if (found = false) {
+		return 0;
+	}
 }
