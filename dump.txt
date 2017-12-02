@@ -1,38 +1,16 @@
-
-
-int pMT::find(string vote, int time, int hashSelect)
-/**
-* @brief given a vote, timestamp, and hash function, does this vote exist in the tree?
-* @param vote, a string
-* @param time, an int
-* @param hashSelect, an int corresponding to the hash functions _1, _2, and _3
-* @return 0 if not found, else number of opperations required to find the matching vote
-*/
-{
-	bTREE::treeNode* subtree = myMerkle.tree;
-
-	return find_helper(vote, time, hashSelect, subtree, 1);
-}
-
-
-int pMT::find_helper(string vote, int time, int hashSelect, bTREE::treeNode* subtree, int number) {
-	//number of operations
-	bool found = false;
-
-	//why is this not working????????????
-	if (subtree == NULL)
-	{
-		return 0;
-		found = true;
-	}
-	else if (vote == subtree->data && time == subtree->time) {
-		return number;
-	}
-	else {
-		number = 1 + (find_helper(vote, time, hashSelect, subtree->left_child, number) || find_helper(vote, time, hashSelect, subtree->right_child, number));
-		return number;
-	}
-	if (found = false) {
-		return 0;
+int pMT::find_helper(string vote, int time, int hashSelect, bTREE::treeNode* subtree) {
+	if (subtree != NULL) {
+		if (vote == subtree->data && time == subtree->time) {
+			return count;
+		}
+		else {
+			if (subtree->left_child != NULL || subtree->right_child != NULL) {
+				count = count + (find_helper(vote, time, hashSelect, subtree->left_child) || find_helper(vote, time, hashSelect, subtree->right_child));
+				return count;
+			}
+			else {
+				return count;
+			}
+		}
 	}
 }
