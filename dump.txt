@@ -6,9 +6,9 @@ int pMT::find_helper(string vote, int time, int hashSelect, bTREE::treeNode* sub
 		else {
 			if (subtree->left_child != NULL || subtree->right_child != NULL) {
 				count = count + (find_helper(vote, time, hashSelect, subtree->left_child) || find_helper(vote, time, hashSelect, subtree->right_child));
-				return count;
+			if (count == myMerkle.bTREE::numberOfNodes()-1) {
+				return 0;
 			}
-			else {
 				return count;
 			}
 		}
