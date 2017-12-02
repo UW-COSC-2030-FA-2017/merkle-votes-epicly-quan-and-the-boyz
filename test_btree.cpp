@@ -9,6 +9,7 @@
 #include "pMT.h"
 #include<iostream>
 #include<string>
+#include<cstdlib>
 
 using namespace std;
 
@@ -111,13 +112,26 @@ int main()
 	pMT test(1); 
 	cout << "Adding node: Jack, 42" << endl << test.insert("Jack", 42) << endl << endl;
 
-	cout << "Adding node: max, 22" << endl << test.insert("Maxc", 22) << endl << endl;
+	cout << "Adding node: Maxc, 22" << endl << test.insert("Maxc", 22) << endl << endl;
 
-	cout << "spamming node: max, 22" << endl << endl;
+	cout << "spamming node: Max, X (where x is a random number betwen 1 and 100) 10 times" << endl << endl;
 
-	for (int i = 0; i < 20; i++) {
-		cout << test.insert("Max", 22) << endl << endl;
+	for (int i = 0; i < 10; i++) {
+		cout << test.insert("Max", rand() % 100 + 1) << endl << endl;
 	}
+	test.insert("jack", 55);
+
+	cout << "looking for Max" << endl;
+	cout << test.locateData("Max") << endl << endl;
+
+	cout << "looking for ann" << endl;
+	cout << test.locateData("ann") << endl << endl;
+
+	cout << "finding node: jack, 55" << endl;
+	cout << test.find("jack", 55, 1) << endl << endl;
+
+	cout << "finding node: jenny, 33" << endl;
+	cout << test.find("jenny", 33, 1) << endl << endl;
 	
 	int a;
 
