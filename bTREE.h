@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "stack.h"
+#include <queue>
 
 using namespace std;
 
@@ -42,21 +43,27 @@ public:
 	};
 
 
-	int insert_leaf(string, int);
+	//int insert_leaf(string, int);
 	
+	int getQueueSize();
 
+	// Store node and two pointers to left and right subtrees
 	treeNode* tree = NULL;
+	bTREE* left_subtree = NULL;
+	bTREE* right_subtree = NULL;
+
+	// Queue to keep track of trees
+	queue<bTREE*> queue_trees = queue <bTREE*>();
     
 private:
 
-	// Pointer to treeNode
-	int postorder_insert(string, int, treeNode*);
-	int insert_leaf_helper(string, int);
-
+	int queue_size = 0;
+	
 	int dataInserted_helper(treeNode*);
 	int size(treeNode* tree) const;
 
-	treeNode* insert_helper(string, int, treeNode*);
+
+	int insert_helper(string, int);
 	
 	bool find_helper(string, treeNode*);
 
@@ -84,10 +91,6 @@ public:
     string locate(string);
 	    
 	bool is_same(treeNode* lhs, treeNode* rhs) const;
-	treeNode* not_same_nodes(treeNode* lhs, treeNode* rhs) const;
-
-	// Set root of tree
-	void set_root(string, int);
 
     bool operator==(const bTREE& rhs) const;
 	bool operator!=(const bTREE& rhs) const;

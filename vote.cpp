@@ -5,6 +5,8 @@
 #include "pMT.h"
 using namespace std;
 
+// Received help on insert from Aisha Balogun on insert and hash_nodes functions
+
 int main(int argc, char **argv)
 {
 	ifstream fTwo;
@@ -31,7 +33,7 @@ int main(int argc, char **argv)
 
 	// ask for file name
 	cout << "file 1: ";
-	getline(cin, fileName);
+	cin >> fileName;
 	fOne.open(fileName);
 
 	//loop untill no fail
@@ -66,6 +68,23 @@ int main(int argc, char **argv)
 
 	//close fOne
 	fOne.close();
+
+	// Build merkle tree from first file
+	// Make empty tree with dummy nodes
+	while ((treeOne.getQueueSize()) * 2 <= number_nodes)
+	{
+		treeOne.insert("dummy", 0);
+	}
+
+	// Insert actual data into nodes
+	for (int i = 0; i < number_nodes; i++)
+	{
+		treeOne.insert(votes[i], timestamps[i]);
+	}
+
+	// Hash nodes of tree
+	treeOne.hash_tree();
+
 	
 	//get second file to read from
 	cout << "file 2: ";
@@ -99,9 +118,27 @@ int main(int argc, char **argv)
 
 		number_nodes++;
 	}
-	
+
 	// Close fTwo
 	fTwo.close();
+
+
+	// Build merkle tree from first file
+	// Make empty tree with dummy nodes
+	while ((treeTwo.getQueueSize()) * 2 <= number_nodes)
+	{
+		treeTwo.insert("dummy", 0);
+	}
+
+	// Insert actual data into nodes
+	for (int i = 0; i < number_nodes; i++)
+	{
+		treeTwo.insert(votes[i], timestamps[i]);
+	}
+
+	// Hash nodes of tree
+	treeTwo.hash_tree();
+
 
 	// Compare treeOne and treeTwo
 	if (treeOne == treeTwo) 
@@ -110,9 +147,11 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		cout << "Not Validatede" << endl;
+		cout << "Not Validated" << endl;
 	}
-	int a;
-	cin >> a;
+
+
+	// Further testing
+
 	return 0;
 }

@@ -9,10 +9,12 @@ bTREE::bTREE()
 {
 	// Construct root
 	tree = NULL;	
+
 }
 
 bTREE::~bTREE()
 {
+	
 }
 
 int bTREE::dataInserted()
@@ -21,6 +23,12 @@ int bTREE::dataInserted()
 	return dataInserted_helper(subtree);
 }
 
+
+// Return queue size
+int bTREE::getQueueSize()
+{
+	return queue_size;
+}
 
 // Count number of data nodes inserted into tree with recursion
 int bTREE::dataInserted_helper(treeNode* subtree)
@@ -74,6 +82,8 @@ int bTREE::size(treeNode* tree) const
 
 bool bTREE::insert(string data, int time)
 {
+	return insert_helper(data, time);
+	/*
 	// Call helper function insert_helper()
 	treeNode* leaf = insert_helper(data, time, tree);
 
@@ -90,134 +100,68 @@ bool bTREE::insert(string data, int time)
 	else
 	{
 		return false;
-	}
+	}*/
 }
 
 
 
-// Insert data and time into binary tree
-// Return true/false for success/failure
-bTREE::treeNode* bTREE::insert_helper(string data_insert, int time_insert, treeNode* subtree)
+int bTREE::insert_helper(string data_insert, int time_insert)
 {
-
-	// Insert if node is empty
-	if (subtree == NULL)
-	{
-		//subtree = new treeNode();
-		subtree = new treeNode();
-		subtree->set_node(true);
-		subtree->set_data(data_insert, time_insert);
-		return subtree;
-	}
-	else
-	{
-		// Insert in left child if empty
-		subtree->is_leaf = false;
-		if (subtree->left_child == NULL)
-		{
-			subtree->left_child = insert_helper(data_insert, time_insert, subtree->left_child);
-		}
-		else
-		{
-			subtree->right_child = insert_helper(data_insert, time_insert, subtree->right_child);
-		}
-	}
-	return subtree;
-}
-
-
-// Insert into leaf of binary tree
-int bTREE::insert_leaf(string vote, int time)
-{
-	return insert_leaf_helper(vote, time);
-}
-
-
-int bTREE::insert_leaf_helper(string vote, int time)
-{
-
-	// Stack to keep track of paths 
-	Stack<treeNode*> path;
+	// Count number of operations
 	int number = 0;
 
-	treeNode* subtree = tree;
+	// Create a new tree and node
+	bTREE* new_tree = new bTREE();
+	treeNode* new_node = new treeNode();
 	
-	// Search for leaf where we can insert data
-	while (subtree->is_leaf == false && subtree->data.length() == 0)
+	if (new_tree == NULL || new_node == NULL)
 	{
-		if (subtree != NULL && subtree->left_child != NULL)
-		{
-			subtree = subtree->left_child;
-			path.push(subtree);
-			number++;
-		}
-		else if (subtree != NULL && subtree->right_child != NULL)
-		{
-			subtree = subtree->right_child;
-			path.push(subtree);
-			number++;
-		}
-		else if (subtree != NULL && subtree->data.length() > 0)
-		{
-			subtree = *path.top();
-			path.pop();
-			number++;
-		}
+		return -1;
 	}
 
-	
-	// Insert data
-	if (subtree != NULL && subtree->is_leaf == true && subtree->data.length() == 0)
-	{
-		subtree->set_data(vote, time);
+	// Set data
+	new_node->set_node();
+	new_node->set_data(data_insert, time_insert);
+
+	// Make new tree's root newly set node
+	new_tree->tree = new_node;
+		
+
+	// If current tree's root is empty, then make node with data its root
+	if (tree->data.length() == 0)
+	{	
+		tree = new_node;
+		queue_trees.push(new_tree);
+		queue_size++;
 		number++;
+	}
+	// Insert into left subtree if it's empty
+	else if (queue_trees.front()->left_subtree == NULL)
+	{
+		queue_trees.front()->left_subtree = new_tree;
+		queue_trees.push(new_tree);
+		//left_subtree = new_tree;
+		queue_size++;
+
+		number = number + 2;
+		tree->is_leaf = false;
+	}
+	// Insert into right subtree if it's empty
+	else if(queue_trees.front()->right_subtree == NULL)
+	{ 
+		// Make new tree the right subtree of first tree in queue
+		queue_trees.front()->right_subtree = new_tree;
+		queue_trees.push(new_tree);
+
+		// Remove oldest element of queue so we can keep inserting nodes
+		queue_trees.pop();
+
+		number = number + 3;
+		tree->is_leaf = false;
 	}
 
 	return number;
 }
-
-
-/*
-// Do postorder traversal to find leaf and insert into it
-int bTREE::postorder_insert(string vote, int time, treeNode* subtree)
-{
-
-	int number = 0;
-	// Iterate through tree and find leftmost leaf
-	if (subtree->is_leaf == false)
-	{
-
-		number = number + postorder_insert(vote, time, subtree->left_child);
-		postorder_insert(vote, time, subtree->right_child);
-
-	}
-	else
-	{
-		// Create temp treeNode to store data in
-		subtree->set_data(vote, time);
-		return 1;
-	}
-
-
-	return;
-
-	*/
-
-
-void bTREE::set_root(string data_hash, int time_set)
-{
-
-	// Set root, if empty
-	if (tree != NULL)
-	{
-		tree->data = data_hash;
-		tree->time = time_set;
-	}
-	
-	return;
-}
-
-
 
 
 // Find data within tree
@@ -358,14 +302,6 @@ bool bTREE::is_same(treeNode* lhs, treeNode* rhs) const
 
 }
 
-
-// Return tree composed of nodes that are different in lhs and rhs
-bTREE::treeNode* bTREE::not_same_nodes(treeNode* lhs, treeNode* rhs) const
-{
-
-	return NULL;
-
-}
 
 std::ostream& operator <<(std::ostream& out, const bTREE& p)
 {

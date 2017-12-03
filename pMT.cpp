@@ -1,4 +1,5 @@
 #include "pMT.h"
+#include "bTREE.h"
 #include <string>
 
 using namespace std;
@@ -10,9 +11,10 @@ pMT::pMT(int hashSelect)
  * @return 
  */
 {
-	myMerkle.tree = new bTREE::treeNode();
-	myMerkle.tree->set_node(false);
-	myMerkle.tree->set_empty_data();
+	myMerkle = new bTREE();
+	myMerkle->tree = new bTREE::treeNode();
+	myMerkle->tree->set_node(false);
+	myMerkle->tree->set_empty_data();
 
 	// Validate input
 	// Default to hash_1
@@ -36,6 +38,13 @@ pMT::~pMT()
 }
 
 
+// Return size of queue of trees from bTREE class
+int pMT::getQueueSize()
+{
+	return myMerkle->getQueueSize();
+}
+
+
 
 // We can use postorder traversal 
 int pMT::insert(string vote, int time)
@@ -48,7 +57,16 @@ int pMT::insert(string vote, int time)
 
 {
 	// Subtree to iterate through tree
-	int number = myMerkle.insert_leaf(vote, time);
+	int number = myMerkle->insert(vote, time);
+
+	// Make tree point to front tree in queue of trees. 
+	// This will make sure that we don't 'forget' all subtrees trees inserted 
+	// If it only took one opearation, it was first insert
+	if (number == 1)
+	{
+		bTREE* temp = myMerkle->queue_trees.front();
+		myMerkle = temp;
+	}
 		
 	return number;
 }
@@ -77,7 +95,7 @@ int pMT::find(string vote, int time, int hashSelect)
 	}
 
 	count = 0;
-	count = find_helper(vote, time, hash, myMerkle.tree);
+	count = find_helper(vote, time, hash, myMerkle->tree);
 	return count;
 }
 
@@ -88,13 +106,15 @@ int pMT::findHash(string mhash)
  * @return 0 if not found, else number of opperations required to find the matching hash
  */
 {
-	return myMerkle.find(mhash);
+	return myMerkle->find(mhash);
 }
 
 
-
+// Helper function for find()
 int pMT::find_helper(string vote, int time, int hashSelect, bTREE::treeNode* subtree) 
 {
+
+	int count = 0;
 	if (subtree != NULL) 
 	{
 		if (vote == subtree->data && time == subtree->time) 
@@ -103,17 +123,16 @@ int pMT::find_helper(string vote, int time, int hashSelect, bTREE::treeNode* sub
 		}
 		else 
 		{
-			if (subtree->left_child != NULL || subtree->right_child != NULL) 
+			count = count + (find_helper(vote, time, hashSelect, subtree->left_child) || find_helper(vote, time, hashSelect, subtree->right_child));
+			if (count == myMerkle->bTREE::numberOfNodes() - 1)
 			{
-				count = count + (find_helper(vote, time, hashSelect, subtree->left_child) || find_helper(vote, time, hashSelect, subtree->right_child));
-				if (count == myMerkle.bTREE::numberOfNodes() - 1) 
-				{
-					return 0;
-				}
-				count = 0;
-				return count;
+				return 0;
 			}
 		}
+	}
+	else
+	{
+		return 0;
 	}
 }
 
@@ -125,7 +144,7 @@ string pMT::locateData(string vote)
 * @return sequence of L's and R's comprising the movement to the leaf node; else return a dot '.'
 */
 {
-	return myMerkle.locate(vote);
+	return myMerkle->locate(vote);
 }
 
 string pMT::locateHash(string mhash)
@@ -135,9 +154,65 @@ string pMT::locateHash(string mhash)
  * @return sequence of L's and R's comprising the movement to the hash node, ; else return a dot '.'
  */
 {
-	return myMerkle.locate(mhash);
+	return myMerkle->locate(mhash);
 }
 
+
+// Hash data depending on hash choice
+// 1 - hash_je
+// 2 - hash_da
+// 3 - hash_ja
+string pMT::hash_data(int hash, string data)
+{
+
+	switch (selectedHash)
+	{
+	case 1: 
+		return hash_je(data);
+		break;
+
+	case 2:
+		return hash_da(data);
+		break;
+
+	default:
+		return hash_ja(data);
+		break;
+
+	}
+}
+
+
+// Hash tree
+void pMT::hash_tree()
+{
+	// Call hash_nodes() helper function
+	hash_nodes(myMerkle);
+}
+
+// Hash nodes of tree
+void pMT::hash_nodes(bTREE* subtree)
+{
+
+	// If left subtree's left child is not empty and ... right child is not empty
+	// Keep iterating until you found leaves
+	if (subtree->left_subtree->left_subtree != NULL && subtree->left_subtree->right_subtree != NULL)
+	{
+		hash_nodes(subtree->left_subtree);
+	}
+
+	if (subtree->right_subtree->left_subtree != NULL && subtree->right_subtree->right_subtree != NULL)
+	{
+		hash_nodes(subtree->right_subtree);
+	}
+
+
+	// Hash leaves and add them
+	// Save it in root node for that subtree
+	subtree->tree->data = hash_data(hash, (hash_data(hash, subtree->left_subtree->tree->data) +
+		hash_data(hash, subtree->right_subtree->tree->data)));
+
+}
 
 string pMT::hash_je(string key)
 /**
@@ -147,7 +222,7 @@ string pMT::hash_je(string key)
 */
 //Hash function from Lab09 on hashfunctions
 {
-	unsigned int hash = 11;
+	unsigned int hash = 11000;
 
 	for (std::size_t i = 0; i < key.length(); i++)
 	{
@@ -241,7 +316,7 @@ std::ostream& operator<<(std::ostream& out, const pMT& p)
 */
 {
 
-	if (p.myMerkle.numberOfNodes() == 0)
+	if (p.myMerkle->numberOfNodes() == 0)
 	{
 		out << "Empty";
 	}
