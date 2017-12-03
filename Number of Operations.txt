@@ -1,0 +1,14 @@
+Damir Pulatov, Jesse Cornejo, James Hoffman
+We worked on this together. 
+
+Compute the number of operations it takes to:
+
+1) Insert a new data node - Time complexity for this is O(log(n)), because you have to go through all levels of the tree. 
+Source: https://brilliant.org/wiki/merkle-tree/
+
+2) Recompute hashes upon entry of a new node - Time complexity for this is O(n^2), because it takes ‘n’ steps to traverse to leaves and another ‘n’ steps to compute hashes and store them accordingly. 
+
+3) Compare if two trees are identical - Comparing (synchronizing) two Merkle Trees has an average time complexity of O(log(n)). The worst case scenario comparison is O(n) because you have to compare all the nodes trees. 
+Source: https://brilliant.org/wiki/merkle-tree/
+
+4) Determine where two trees differ - This should be similar to comparing if two trees are identical. 
