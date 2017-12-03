@@ -1,0 +1,18 @@
+Defining hash functions for Homework 
+We worked together to figure out how these hash functions worked.
+Damir:
+string pMT::hash_da(string key)
+JPW hash from lab09
+This hash involves shifting of the previous hash and adding current byte. After it has done this, it gets the high bits and moves them. It then adds this too iteself for each character of the length of the string inserted. 
+source: (https://en.wikipedia.org/wiki/PJW_hash_function)
+
+Jesse:
+string pMT::has_je(string key)
+JS hash from lab09
+This involves shifting bits left from key at each character of the string and adding zeros. Then add the key followed by shifting bits right. 
+
+James;
+string pMT::hash_ja(string key)
+BKDR hash from lab09
+This works by initializing an int 131 then iterating through each character of the string. With eacher iteration it is adding the hash function which includes multiplying itself by the initialized 131 and then adding the character. This happens until the end of the string is reached. 
+ 
